@@ -39,9 +39,23 @@ const Years: React.FC<IYears> = ({
 const Year: React.FC<IYear> = ({
   year
 }) => {
-  const { currentSelected, preSelection, setPreSelection = () => { }, setPreSelectionYear, setStep } = useContext(ReactanggalContext)
+  const {
+    currentSelected,
+    preSelection,
+    setPreSelection = () => { },
+    setPreSelectionYear,
+    setStep,
+    minDate,
+    maxDate
+  } = useContext(ReactanggalContext)
+
+  const isDisabled = useMemo(() => {
+    if (!minDate && !maxDate) return
+    return (minDate && year < getYear(minDate)) || (maxDate && year > getYear(maxDate))
+  }, [minDate, maxDate, year])
 
   const handleClick = () => {
+    if (isDisabled) return
     setPreSelectionYear(setYear(preSelection, year))
     setPreSelection(setYear(preSelection, year))
     setStep(2)
@@ -52,7 +66,8 @@ const Year: React.FC<IYear> = ({
       className={clsx(
         "reactanggal__button reactanggal__calendar-year",
         +year === +getYear(new Date()) && 'reactanggal__calendar-year--today',
-        (currentSelected && +year === +getYear(currentSelected)) && 'reactanggal__calendar-year--selected'
+        (currentSelected && +year === +getYear(currentSelected)) && 'reactanggal__calendar-year--selected',
+        isDisabled && 'reactanggal__calendar-year--disabled'
       )}
       onClick={handleClick}
     >

@@ -107,13 +107,6 @@
     line-height: $reactanggal__calendar-item-size;
     font-size: $reactanggal__calendar-item-font-size;
     color: $reactanggal__calendar-item-text-color;
-    &--disabled {
-      color: $reactanggal__calendar-item-text-color--disabled;
-    }
-    &--hidden {
-      cursor: default;
-      opacity: 0;
-    }
     &--today {
       background-color: rgba($reactanggal__primary-color, .2);
       color: $reactanggal__primary-color;
@@ -136,6 +129,28 @@
         border-bottom-color: $reactanggal__white-color;
         border-top-color: $reactanggal__white-color;
       }
+    }
+    &--outside, &--disabled {
+      color: $reactanggal__calendar-item-text-color--disabled;
+
+      &.reactanggal__calendar-month, &.reactanggal__calendar-year, &.reactanggal__calendar-day-num {
+        &--today, &--selected {
+          background-color: rgba($reactanggal__calendar-item-text-color--disabled, .1);
+          &::before {
+            border-bottom-color: $reactanggal__calendar-item-text-color--disabled;
+            border-top-color: $reactanggal__calendar-item-text-color--disabled;
+          }
+        }
+      }
+    }
+    &--hidden, &--disabled {
+      cursor: default;
+    }
+    &--disabled:hover::after {
+      opacity: 0;
+    }
+    &--hidden {
+      opacity: 0;
     }
   }
 
