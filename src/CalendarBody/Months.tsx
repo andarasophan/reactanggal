@@ -31,10 +31,10 @@ interface IMonth {
 const Month: React.FC<IMonth> = ({
   month
 }) => {
-  const { currentSelected, preSelection, preSelectionYear, setPreSelection = () => { }, setStep } = useContext(ReactanggalContext)
+  const { currentSelected, preSelectionYear, setPreSelection = () => { }, setStep } = useContext(ReactanggalContext)
 
   const handleClick = () => {
-    setPreSelection(setMonth(preSelection, month))
+    setPreSelection(setMonth(preSelectionYear, month))
     setStep(0)
   }
 
