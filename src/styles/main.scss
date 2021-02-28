@@ -1,0 +1,148 @@
+@import './variable';
+
+.reactanggal__calendar {
+  font-family: $reactanggal__font-family;
+  display: inline-block;
+  padding: $reactanggal__calendar-padding;
+  border-radius: $reactanggal__calendar-border-radius;
+  box-shadow: $reactanggal__calendar-box-shadow;
+
+  .reactanggal__button {
+      border: 0;
+      cursor: pointer;
+      outline: 0;
+      position: relative;
+      background-color: transparent;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      padding: 0;
+      &:focus {
+        outline: none;
+      }
+      &:hover {
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: $reactanggal__button-hover-color;
+          z-index: -1;
+          border-radius: $reactanggal__button-border-radius;
+        }
+      }
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+  }
+  
+  .reactanggal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+    .reactanggal__header-period-control-button {
+      padding: .75rem;
+    }
+    .reactanggal__header-arrow-button {
+      position: relative;
+      height: 2.5rem;
+      width: 2.5rem;
+      &::before {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        content: "";
+        margin: 1rem;
+        border: 0 solid currentColor;
+        border-top-width: 0px;
+        border-left-width: 0px;
+        border-top-width: 2px;
+      }
+      &--previous::before {
+        border-left-width: 2px;
+        transform: translateX(2px) rotate(-45deg);
+      }
+      &--next::before {
+        border-right-width: 2px;
+        transform: translateX(-2px) rotate(45deg);
+      }
+    }
+  }
+  
+  .reactanggal__calendar-weeks-header {
+    display: flex;
+    margin-bottom: .5rem;
+  }
+  
+  .reactanggal__calendar-body {
+    border-top: 1px solid rgba($reactanggal__dark-color, .12);
+    padding-top: .5rem;
+    .reactanggal__calendar-week, .reactanggal__calendar-years, .reactanggal__calendar-months {
+      display: flex;
+    }
+  }
+
+  .reactanggal__calendar-day {
+    width: $reactanggal__calendar-item-size;
+    &.reactanggal__calendar-day-name {
+      font-size: $reactanggal__day-name-font-size;
+      color: $reactanggal__day-name-text-color;
+    }
+  }
+
+  .reactanggal__calendar-month, .reactanggal__calendar-year, .reactanggal__calendar-day {
+    text-align: center;
+  }
+
+  .reactanggal__calendar-month, .reactanggal__calendar-year, .reactanggal__calendar-day-num {
+    cursor: pointer;
+    position: relative;
+    border-radius: $reactanggal__button-border-radius;
+    line-height: $reactanggal__calendar-item-size;
+    font-size: $reactanggal__calendar-item-font-size;
+    color: $reactanggal__calendar-item-text-color;
+    &--disabled {
+      color: $reactanggal__calendar-item-text-color--disabled;
+    }
+    &--hidden {
+      cursor: default;
+      opacity: 0;
+    }
+    &--today {
+      background-color: rgba($reactanggal__primary-color, .2);
+      color: $reactanggal__primary-color;
+      &::before {
+        content: "";
+        display: inline-block;
+        border: solid transparent;
+        border-width: 0 0 7px 7px;
+        border-bottom-color: $reactanggal__primary-color;
+        border-top-color: $reactanggal__primary-color;
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+      }
+    }
+    &--selected {
+      background-color: $reactanggal__calendar-item-selected-color;
+      color: $reactanggal__calendar-item-selected-text-color;
+      &::before {
+        border-bottom-color: $reactanggal__white-color;
+        border-top-color: $reactanggal__white-color;
+      }
+    }
+  }
+
+  .reactanggal__calendar-month, .reactanggal__calendar-year {
+    width: calc(#{$reactanggal__calendar-item-size} * 7 / 4);
+    height: $reactanggal__calendar-item-size;
+  }
+  
+}
+

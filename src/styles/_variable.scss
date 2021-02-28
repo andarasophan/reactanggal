@@ -1,0 +1,21 @@
+$reactanggal__font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$reactanggal__primary-color: #3699ff !default;
+$reactanggal__muted-color: #f3f6f9 !default;
+$reactanggal__dark-color: #000 !default;
+$reactanggal__white-color: #fff !default;
+
+$reactanggal__calendar-padding: 1rem !default;
+$reactanggal__calendar-box-shadow: 0 2px 4px -1px rgba($reactanggal__dark-color,.2),0 4px 5px 0 rgba($reactanggal__dark-color,.14),0 1px 10px 0 rgba($reactanggal__dark-color,.12) !default;
+$reactanggal__calendar-border-radius: 4px !default;
+$reactanggal__calendar-item-size: 2.5rem !default;
+$reactanggal__calendar-item-text-color: $reactanggal__dark-color !default;
+$reactanggal__calendar-item-text-color--disabled: rgba($reactanggal__dark-color,.4) !default;
+$reactanggal__calendar-item-font-size: 13px !default;
+$reactanggal__calendar-item-selected-color: $reactanggal__primary-color !default;
+$reactanggal__calendar-item-selected-text-color: $reactanggal__white-color !default;
+
+$reactanggal__button-hover-color: $reactanggal__muted-color !default;
+$reactanggal__button-border-radius: 4px !default;
+
+$reactanggal__day-name-text-color: rgba($reactanggal__dark-color,.4) !default;
+$reactanggal__day-name-font-size: 12px !default;
