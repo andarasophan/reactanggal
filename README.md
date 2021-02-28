@@ -1,9 +1,11 @@
 # reactanggal
 
-> A date picker component for React
+[![NPM](https://img.shields.io/npm/v/reactanggal.svg)](https://www.npmjs.com/package/reactanggal)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Downloads](https://img.shields.io/npm/dm/reactanggal.svg)](https://npmjs.org/package/reactanggal)
+[![License](https://img.shields.io/npm/l/reactanggal.svg)](https://npmjs.org/package/reactanggal)
 
-[![NPM](https://img.shields.io/npm/v/reactanggal.svg)](https://www.npmjs.com/package/reactanggal) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
+A date picker component for React
 ## Install
 
 ```bash
@@ -28,6 +30,13 @@ const App = () => {
   )
 }
 ```
+### Props
+| Key | Default Value | Type | Description
+| --- | -------- | ---- | ----------- |
+| `selected` | `undefined` | `Date` / `null` / `undefined` | Selected date value
+| `minDate` | `undefined` | `Date` / `null` / `undefined` | Set minimum date to select & disable earlier dates
+| `maxDate` | `undefined` | `Date` / `null` / `undefined` | Set maxixum date to select & disable later dates
+| `showOutsideMonth` | `false` | `boolean` | Show or hide dates that fall outside the current month
 
 ## License
 
