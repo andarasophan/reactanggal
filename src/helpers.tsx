@@ -4,6 +4,6 @@ import { getYear } from "date-fns"
 export const myGetYearStart = (year: Date, totalYears: number) => {
   const getPreSelectionYear = getYear(year)
   let currentYearStart = +getPreSelectionYear % +totalYears
-  currentYearStart = +getPreSelectionYear - (currentYearStart === 0 ? currentYearStart : 24) + 1
+  currentYearStart = +getPreSelectionYear - (currentYearStart !== 0 ? currentYearStart : 24) + 1
   return currentYearStart
 }
