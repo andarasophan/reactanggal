@@ -15,7 +15,7 @@ const Reactanggal: React.FC<IReactanggal> = ({
   showOutsideMonth = false
 }) => {
   const [step, setStep] = useState(0)
-  const [preSelection, setPreSelection] = useState(selected ? selected : new Date())
+  const [preSelection, setPreSelection] = useState(selected || new Date())
   const [preSelectionYear, setPreSelectionYear] = useState(new Date())
 
   return (
@@ -29,7 +29,8 @@ const Reactanggal: React.FC<IReactanggal> = ({
       preSelectionYear,
       setPreSelectionYear,
       showOutsideMonth
-    }}>
+    }}
+    >
       <ReactanggalRoot />
     </ReactanggalContext.Provider>
   )
