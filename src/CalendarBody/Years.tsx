@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import { getYear, setYear } from 'date-fns'
+import pakaiClass from 'pakai-class'
 import React, { useContext, useMemo } from 'react'
 import { ReactanggalContext } from '../context'
 
@@ -67,7 +67,7 @@ const Year: React.FC<IYear> = ({
   return (
     <div
       tabIndex={isFocusable ? 0 : -1}
-      className={clsx(
+      className={pakaiClass(
         "reactanggal__button reactanggal__calendar-year",
         +year === +getYear(new Date()) && 'reactanggal__calendar-year--today',
         (currentSelected && +year === +getYear(currentSelected)) && 'reactanggal__calendar-year--selected',

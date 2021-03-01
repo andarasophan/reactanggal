@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import { addMonths, format, getMonth, isSameYear, setMonth, startOfYear } from 'date-fns'
+import pakaiClass from 'pakai-class'
 import React, { useContext, useMemo } from 'react'
 import { ReactanggalContext } from '../context'
 
@@ -56,7 +56,7 @@ const Month: React.FC<IMonth> = ({
   return (
     <div
       tabIndex={isFocusable ? 0 : -1}
-      className={clsx(
+      className={pakaiClass(
         "reactanggal__button reactanggal__calendar-month",
         (+month === +getMonth(new Date()) && isSameYear(preSelectionYear, new Date())) && 'reactanggal__calendar-month--today',
         (currentSelected && +month === +getMonth(currentSelected) && isSameYear(preSelectionYear, currentSelected)) && 'reactanggal__calendar-month--selected',

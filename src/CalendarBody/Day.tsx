@@ -1,7 +1,7 @@
 import { getDate, isAfter, isBefore, isSameDay, isSameMonth } from 'date-fns'
 import React, { useContext, useMemo } from 'react'
-import clsx from 'clsx'
 import { ReactanggalContext } from '../context'
+import pakaiClass from 'pakai-class'
 
 interface IDay {
   day: Date
@@ -41,7 +41,7 @@ const Day: React.FC<IDay> = ({
   return (
     <div
       tabIndex={isFocusable ? 0 : -1}
-      className={clsx(
+      className={pakaiClass(
         'reactanggal__calendar-day reactanggal__calendar-day-num reactanggal__button',
         isSameDay(day, new Date()) && 'reactanggal__calendar-day-num--today',
         (currentSelected && isSameDay(day, currentSelected)) && 'reactanggal__calendar-day-num--selected',
