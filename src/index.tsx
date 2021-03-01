@@ -49,12 +49,13 @@ const ReactanggalRoot = () => {
   useEffect(() => {
     // for focus trap
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key != 'Tab') return
       const focusableElements = calendarRef.current?.querySelectorAll('button:not([disabled]), [tabindex="0"]')
-      if (e.target === focusableElements?.[focusableElements.length - 1] && e.key === 'Tab' && !e.shiftKey) {
+      if (e.target === focusableElements?.[focusableElements.length - 1] && !e.shiftKey) {
         e.preventDefault();
         (focusableElements[0] as HTMLElement)?.focus()
       }
-      else if (e.target === focusableElements?.[0] && e.key === 'Tab' && e.shiftKey) {
+      else if (e.target === focusableElements?.[0] && e.shiftKey) {
         e.preventDefault();
         (focusableElements[focusableElements.length - 1] as HTMLElement)?.focus()
       }
