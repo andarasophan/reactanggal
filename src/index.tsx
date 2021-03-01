@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CalendarHeader from './CalendarHeader'
 import { ReactanggalContext } from './context'
 import CalendarBody from './CalendarBody'
@@ -44,8 +44,27 @@ const Reactanggal: React.FC<IReactanggal> = ({
 }
 
 const ReactanggalRoot = () => {
+  const calendarRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // for focus trap
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const focusableElements = calendarRef.current?.querySelectorAll('button:not([disabled]), [tabindex="0"]')
+      if (e.target === focusableElements?.[focusableElements.length - 1] && e.key === 'Tab' && !e.shiftKey) {
+        e.preventDefault();
+        (focusableElements[0] as HTMLElement)?.focus()
+      }
+      else if (e.target === focusableElements?.[0] && e.key === 'Tab' && e.shiftKey) {
+        e.preventDefault();
+        (focusableElements[focusableElements.length - 1] as HTMLElement)?.focus()
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
   return (
-    <div className="reactanggal__calendar">
+    <div ref={calendarRef} className="reactanggal__calendar">
       <CalendarHeader />
       <CalendarBody />
     </div>

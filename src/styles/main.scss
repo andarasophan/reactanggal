@@ -20,7 +20,7 @@
       &:focus {
         outline: none;
       }
-      &:hover {
+      &:hover, &:focus {
         &::after {
           content: '';
           position: absolute;

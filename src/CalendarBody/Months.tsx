@@ -40,6 +40,8 @@ const Month: React.FC<IMonth> = ({
     maxDate
   } = useContext(ReactanggalContext)
 
+  const isFocusable = useMemo(() => month === getMonth(preSelectionYear), [month, preSelectionYear])
+
   const isDisabled = useMemo(() => {
     if (!minDate && !maxDate) return
     return (minDate && month < getMonth(minDate) && isSameYear(preSelectionYear, minDate)) || (maxDate && month > getMonth(maxDate) && isSameYear(preSelectionYear, maxDate))
@@ -53,6 +55,7 @@ const Month: React.FC<IMonth> = ({
 
   return (
     <div
+      tabIndex={isFocusable ? 0 : -1}
       className={clsx(
         "reactanggal__button reactanggal__calendar-month",
         (+month === +getMonth(new Date()) && isSameYear(preSelectionYear, new Date())) && 'reactanggal__calendar-month--today',

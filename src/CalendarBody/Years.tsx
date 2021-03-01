@@ -42,12 +42,15 @@ const Year: React.FC<IYear> = ({
   const {
     currentSelected,
     preSelection,
+    preSelectionYear,
     setPreSelection = () => { },
     setPreSelectionYear,
     setStep,
     minDate,
     maxDate
   } = useContext(ReactanggalContext)
+
+  const isFocusable = useMemo(() => +year === +getYear(preSelectionYear), [year, preSelectionYear])
 
   const isDisabled = useMemo(() => {
     if (!minDate && !maxDate) return
@@ -63,6 +66,7 @@ const Year: React.FC<IYear> = ({
 
   return (
     <div
+      tabIndex={isFocusable ? 0 : -1}
       className={clsx(
         "reactanggal__button reactanggal__calendar-year",
         +year === +getYear(new Date()) && 'reactanggal__calendar-year--today',

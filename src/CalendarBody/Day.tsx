@@ -22,6 +22,8 @@ const Day: React.FC<IDay> = ({
 
   const isOutsideMonth = useMemo(() => !isSameMonth(day, preSelection), [day, preSelection])
 
+  const isFocusable = useMemo(() => isSameDay(day, preSelection), [day, preSelection])
+
   const isDisabled = useMemo(() => {
     if (!minDate && !maxDate) return
     return (minDate && isBefore(day, minDate)) || (maxDate && isAfter(day, maxDate))
@@ -38,6 +40,7 @@ const Day: React.FC<IDay> = ({
 
   return (
     <div
+      tabIndex={isFocusable ? 0 : -1}
       className={clsx(
         'reactanggal__calendar-day reactanggal__calendar-day-num reactanggal__button',
         isSameDay(day, new Date()) && 'reactanggal__calendar-day-num--today',
