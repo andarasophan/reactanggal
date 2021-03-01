@@ -1,4 +1,4 @@
-import { addMonths, addYears, endOfMonth, format, getYear, isAfter, isBefore, startOfMonth, subMonths, subYears } from 'date-fns'
+import { addMonths, addYears, endOfMonth, endOfYear, format, getYear, isAfter, isBefore, startOfMonth, startOfYear, subMonths, subYears } from 'date-fns'
 import React, { useContext, useMemo } from 'react'
 import { ReactanggalContext } from './context'
 import { myGetYearStart } from './helpers'
@@ -54,7 +54,7 @@ const CalendarHeader = () => {
       return !Boolean(firstYearPreSelectionYear - 1)
     }
     if (step === 2) {
-      if (minDate) return isBefore(subYears(preSelectionYear, 1), minDate)
+      if (minDate) return isBefore(endOfYear(subYears(preSelectionYear, 1)), minDate)
       return !Boolean(getYear(preSelectionYear) - 1)
     }
     return
@@ -64,7 +64,7 @@ const CalendarHeader = () => {
     if (!maxDate) return false
     if (step === 0) return isAfter(startOfMonth(addMonths(preSelection, 1)), maxDate)
     if (step === 1) return (myGetYearStart(preSelectionYear, 24) + 24) > getYear(maxDate)
-    if (step === 2) return isAfter(addYears(preSelectionYear, 1), maxDate)
+    if (step === 2) return isAfter(startOfYear(addYears(preSelectionYear, 1)), maxDate)
     return
   }, [step, preSelection, maxDate, preSelectionYear])
 
