@@ -34,8 +34,9 @@ const App = () => {
 | Key | Default Value | Type | Description
 | --- | -------- | ---- | ----------- |
 | `selected` | `undefined` | `Date` / `null` / `undefined` | Selected date value
+| `onChange` | `undefined` | `function` | Handle date changes
 | `minDate` | `undefined` | `Date` / `null` / `undefined` | Set minimum date to select & disable earlier dates
-| `maxDate` | `undefined` | `Date` / `null` / `undefined` | Set maxixum date to select & disable later dates
+| `maxDate` | `undefined` | `Date` / `null` / `undefined` | Set maximum date to select & disable later dates
 | `showOutsideMonth` | `false` | `boolean` | Show or hide dates that fall outside the current month
 
 ## License
