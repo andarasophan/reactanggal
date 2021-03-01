@@ -1,7 +1,8 @@
-import { getDate, isAfter, isBefore, isSameDay, isSameMonth } from 'date-fns'
-import React, { useContext, useMemo } from 'react'
+import { addWeeks, getDate, isAfter, isBefore, isSameDay, isSameMonth, subDays, subWeeks } from 'date-fns'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { ReactanggalContext } from '../context'
 import pakaiClass from 'pakai-class'
+import { addDays } from 'date-fns/esm'
 
 interface IDay {
   day: Date
@@ -10,6 +11,8 @@ interface IDay {
 const Day: React.FC<IDay> = ({
   day
 }) => {
+  const dayRef = useRef<HTMLDivElement>(null)
+
   const {
     currentSelected,
     setCurrentSelected,
@@ -17,7 +20,9 @@ const Day: React.FC<IDay> = ({
     preSelection,
     showOutsideMonth,
     minDate,
-    maxDate
+    maxDate,
+    forceFocus,
+    setForceFocus
   } = useContext(ReactanggalContext)
 
   const isOutsideMonth = useMemo(() => !isSameMonth(day, preSelection), [day, preSelection])
@@ -38,8 +43,43 @@ const Day: React.FC<IDay> = ({
     if (!isSameMonth(day, preSelection)) setPreSelection(day)
   }
 
+  //watch forceFocus
+  useEffect(() => {
+    if (forceFocus && isFocusable) {
+      setForceFocus(false)
+      dayRef.current?.focus()
+    }
+  }, [forceFocus, isFocusable, setForceFocus])
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!isFocusable) return
+    const key = e.key
+    if (key !== ' ' && key !== 'Enter' && key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'ArrowRight' && key !== 'ArrowLeft') return
+    if (key === ' ' || key === 'Enter') {
+      setCurrentSelected(preSelection)
+      return
+    }
+
+    let newPreSelection;
+    let disabledMove;
+    if (key === 'ArrowUp' || key === 'ArrowLeft') {
+      newPreSelection = key === 'ArrowUp' ? subWeeks(preSelection, 1) : subDays(preSelection, 1)
+      disabledMove = minDate && isBefore(newPreSelection, minDate)
+    }
+    else if (key === 'ArrowDown' || key === 'ArrowRight') {
+      newPreSelection = key === 'ArrowDown' ? addWeeks(preSelection, 1) : addDays(preSelection, 1)
+      disabledMove = maxDate && isAfter(newPreSelection, maxDate)
+    }
+    if (!disabledMove && newPreSelection) {
+      setPreSelection(newPreSelection)
+      setForceFocus(true)
+    }
+  }, [setCurrentSelected, preSelection, setPreSelection, setForceFocus, isFocusable, minDate, maxDate])
+
   return (
     <div
+      onKeyDown={handleKeyDown}
+      ref={dayRef}
       tabIndex={isFocusable ? 0 : -1}
       className={pakaiClass(
         'reactanggal__calendar-day reactanggal__calendar-day-num reactanggal__button',

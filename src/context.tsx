@@ -12,6 +12,8 @@ interface IReactanggalProvider {
   minDate: Date | null | undefined
   maxDate: Date | null | undefined
   showOutsideMonth: boolean
+  forceFocus: boolean
+  setForceFocus: (value: boolean) => void
 }
 
 export const ReactanggalContext = createContext<IReactanggalProvider>({
@@ -23,5 +25,7 @@ export const ReactanggalContext = createContext<IReactanggalProvider>({
   preSelectionYear: new Date(),
   minDate: null,
   maxDate: null,
-  showOutsideMonth: false
+  showOutsideMonth: false,
+  forceFocus: false,
+  setForceFocus: () => { }
 });
