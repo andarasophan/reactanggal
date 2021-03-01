@@ -1,6 +1,7 @@
-import { getYear, setYear } from 'date-fns'
+import { getYear, setYear, subYears } from 'date-fns'
+import { addYears } from 'date-fns/esm'
 import pakaiClass from 'pakai-class'
-import React, { useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { ReactanggalContext } from '../context'
 
 interface IYears {
@@ -39,6 +40,8 @@ const Years: React.FC<IYears> = ({
 const Year: React.FC<IYear> = ({
   year
 }) => {
+  const yearRef = useRef<HTMLDivElement>(null)
+
   const {
     currentSelected,
     preSelection,
@@ -47,7 +50,9 @@ const Year: React.FC<IYear> = ({
     setPreSelectionYear,
     setStep,
     minDate,
-    maxDate
+    maxDate,
+    forceFocus,
+    setForceFocus
   } = useContext(ReactanggalContext)
 
   const isFocusable = useMemo(() => +year === +getYear(preSelectionYear), [year, preSelectionYear])
@@ -57,15 +62,51 @@ const Year: React.FC<IYear> = ({
     return (minDate && year < getYear(minDate)) || (maxDate && year > getYear(maxDate))
   }, [minDate, maxDate, year])
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (isDisabled) return
     setPreSelectionYear(setYear(preSelection, year))
     setPreSelection(setYear(preSelection, year))
     setStep(2)
-  }
+  }, [isDisabled, setPreSelectionYear, preSelection, year, setPreSelection, setStep])
+
+  //watch forceFocus
+  useEffect(() => {
+    if (forceFocus && isFocusable) {
+      setForceFocus(false)
+      yearRef.current?.focus()
+    }
+  }, [forceFocus, isFocusable, setForceFocus])
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!isFocusable) return
+    const key = e.key
+    if (key !== ' ' && key !== 'Enter' && key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'ArrowRight' && key !== 'ArrowLeft') return
+    if (key === ' ' || key === 'Enter') {
+      handleClick()
+      return
+    }
+
+    let newPreSelection;
+    let disabledMove;
+    if (key === 'ArrowUp' || key === 'ArrowLeft') {
+      newPreSelection = subYears(preSelectionYear, key === 'ArrowUp' ? 4 : 1)
+      const getYearNewPre = getYear(newPreSelection)
+      disabledMove = (minDate && getYearNewPre < getYear(minDate)) || getYearNewPre < 1
+    }
+    else if (key === 'ArrowDown' || key === 'ArrowRight') {
+      newPreSelection = addYears(preSelectionYear, key === 'ArrowDown' ? 4 : 1)
+      disabledMove = maxDate && getYear(newPreSelection) > getYear(maxDate)
+    }
+    if (!disabledMove && newPreSelection) {
+      setPreSelectionYear(newPreSelection)
+      setForceFocus(true)
+    }
+  }, [isFocusable, handleClick, minDate, maxDate, preSelectionYear, setPreSelectionYear, setForceFocus])
 
   return (
     <div
+      ref={yearRef}
+      onKeyDown={handleKeyDown}
       tabIndex={isFocusable ? 0 : -1}
       className={pakaiClass(
         "reactanggal__button reactanggal__calendar-year",
