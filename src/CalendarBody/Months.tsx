@@ -42,8 +42,8 @@ const Month: React.FC<IMonth> = ({
 
   const isDisabled = useMemo(() => {
     if (!minDate && !maxDate) return
-    return (minDate && month < getMonth(minDate)) || (maxDate && month > getMonth(maxDate))
-  }, [minDate, maxDate, month])
+    return (minDate && month < getMonth(minDate) && isSameYear(preSelectionYear, minDate)) || (maxDate && month > getMonth(maxDate) && isSameYear(preSelectionYear, maxDate))
+  }, [minDate, maxDate, month, preSelectionYear])
 
   const handleClick = () => {
     if (isDisabled) return
