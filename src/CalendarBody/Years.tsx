@@ -67,7 +67,8 @@ const Year: React.FC<IYear> = ({
     setPreSelectionYear(setYear(preSelection, year))
     setPreSelection(setYear(preSelection, year))
     setStep(2)
-  }, [isDisabled, setPreSelectionYear, preSelection, year, setPreSelection, setStep])
+    setForceFocus(true)
+  }, [isDisabled, setPreSelectionYear, preSelection, year, setPreSelection, setStep, setForceFocus])
 
   //watch forceFocus
   useEffect(() => {

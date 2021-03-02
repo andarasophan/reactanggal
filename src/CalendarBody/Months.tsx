@@ -56,7 +56,8 @@ const Month: React.FC<IMonth> = ({
     if (isDisabled) return
     setPreSelection(setMonth(preSelectionYear, month))
     setStep(0)
-  }, [isDisabled, setPreSelection, preSelectionYear, setStep])
+    setForceFocus(true)
+  }, [isDisabled, setPreSelection, preSelectionYear, setStep, setForceFocus])
 
   //watch forceFocus
   useEffect(() => {

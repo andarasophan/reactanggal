@@ -22,7 +22,7 @@ const Reactanggal: React.FC<IReactanggal> = ({
   const [step, setStep] = useState(0)
   const [preSelection, setPreSelection] = useState(selected || minDate || maxDate || new Date())
   const [preSelectionYear, setPreSelectionYear] = useState(new Date())
-  const [forceFocus, setForceFocus] = useState(false)
+  const [forceFocus, setForceFocus] = useState(true)
 
   return (
     <ReactanggalContext.Provider value={{

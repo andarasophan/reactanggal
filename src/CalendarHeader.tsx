@@ -12,13 +12,15 @@ const CalendarHeader = () => {
     setPreSelectionYear,
     preSelectionYear,
     minDate,
-    maxDate
+    maxDate,
+    setForceFocus
   } = useContext(ReactanggalContext)
 
   const handleStep = () => {
     if (step === 0) {
       setPreSelectionYear(preSelection)
       setStep(1)
+      setForceFocus(true)
     } else setStep(0)
   }
 

@@ -40,7 +40,10 @@ const Day: React.FC<IDay> = ({
     if (!(typeof setCurrentSelected === 'function')) return
 
     setCurrentSelected(day)
-    if (!isSameMonth(day, preSelection)) setPreSelection(day)
+
+    //set focus
+    setPreSelection(day)
+    setForceFocus(true)
   }
 
   //watch forceFocus

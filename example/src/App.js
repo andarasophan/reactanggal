@@ -1,10 +1,10 @@
-import { addDays, format } from 'date-fns'
+import { addYears, format } from 'date-fns'
 import React, { useState } from 'react'
 import Reactanggal from 'reactanggal'
 import 'reactanggal/dist/reactanggal.css'
 
-const minDate = addDays(new Date(), -1)
-const maxDate = addDays(new Date(), 2)
+const minDate = addYears(new Date(), -1)
+const maxDate = addYears(new Date(), 3)
 
 const App = () => {
   const [date, setDate] = useState(null)
@@ -17,6 +17,7 @@ const App = () => {
         onChange={setDate}
         minDate={minDate}
         maxDate={maxDate}
+      // showOutsideMonth
       />
     </div>
   )
