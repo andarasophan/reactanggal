@@ -1,6 +1,6 @@
-import { addMonths, format, getMonth, isSameYear, setMonth, startOfYear } from 'date-fns'
+import { addMonths, endOfMonth, format, getMonth, isAfter, isSameYear, setMonth, startOfMonth, startOfYear, subMonths } from 'date-fns'
 import pakaiClass from 'pakai-class'
-import React, { useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { ReactanggalContext } from '../context'
 
 const monthsArr = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]
@@ -31,13 +31,18 @@ interface IMonth {
 const Month: React.FC<IMonth> = ({
   month
 }) => {
+  const monthRef = useRef<HTMLDivElement>(null)
+
   const {
     currentSelected,
+    setPreSelectionYear,
     preSelectionYear,
     setPreSelection = () => { },
     setStep,
     minDate,
-    maxDate
+    maxDate,
+    forceFocus,
+    setForceFocus
   } = useContext(ReactanggalContext)
 
   const isFocusable = useMemo(() => month === getMonth(preSelectionYear), [month, preSelectionYear])
@@ -47,14 +52,49 @@ const Month: React.FC<IMonth> = ({
     return (minDate && month < getMonth(minDate) && isSameYear(preSelectionYear, minDate)) || (maxDate && month > getMonth(maxDate) && isSameYear(preSelectionYear, maxDate))
   }, [minDate, maxDate, month, preSelectionYear])
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (isDisabled) return
     setPreSelection(setMonth(preSelectionYear, month))
     setStep(0)
-  }
+  }, [isDisabled, setPreSelection, preSelectionYear, setStep])
+
+  //watch forceFocus
+  useEffect(() => {
+    if (forceFocus && isFocusable) {
+      setForceFocus(false)
+      monthRef.current?.focus()
+    }
+  }, [forceFocus, isFocusable, setForceFocus])
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!isFocusable) return
+    const key = e.key
+    if (key !== ' ' && key !== 'Enter' && key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'ArrowRight' && key !== 'ArrowLeft') return
+    if (key === ' ' || key === 'Enter') {
+      handleClick()
+      return
+    }
+
+    let newPreSelection;
+    let disabledMove;
+    if (key === 'ArrowUp' || key === 'ArrowLeft') {
+      newPreSelection = subMonths(preSelectionYear, key === 'ArrowUp' ? 4 : 1)
+      disabledMove = minDate && isAfter(startOfMonth(minDate), newPreSelection)
+    }
+    else if (key === 'ArrowDown' || key === 'ArrowRight') {
+      newPreSelection = addMonths(preSelectionYear, key === 'ArrowDown' ? 4 : 1)
+      disabledMove = maxDate && isAfter(newPreSelection, endOfMonth(maxDate))
+    }
+    if (!disabledMove && newPreSelection) {
+      setPreSelectionYear(newPreSelection)
+      setForceFocus(true)
+    }
+  }, [isFocusable, handleClick, minDate, maxDate, preSelectionYear, setPreSelectionYear, setForceFocus])
 
   return (
     <div
+      ref={monthRef}
+      onKeyDown={handleKeyDown}
       tabIndex={isFocusable ? 0 : -1}
       className={pakaiClass(
         "reactanggal__button reactanggal__calendar-month",
