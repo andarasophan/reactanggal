@@ -1,4 +1,4 @@
-import { getYear, setYear, subYears } from 'date-fns'
+import { getMonth, getYear, isAfter, isBefore, setMonth, setYear, subYears } from 'date-fns'
 import { addYears } from 'date-fns/esm'
 import pakaiClass from 'pakai-class'
 import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
@@ -64,11 +64,30 @@ const Year: React.FC<IYear> = ({
 
   const handleClick = useCallback(() => {
     if (isDisabled) return
-    setPreSelectionYear(setYear(preSelection, year))
-    setPreSelection(setYear(preSelection, year))
+
+    let newValue = setYear(preSelection, year)
+    if (minDate) {
+      // check isbefore and set the month to minDate
+      if (isBefore(newValue, minDate)) {
+        newValue = setMonth(newValue, getMonth(minDate))
+        // check again new value and set date to minDate
+        if (isBefore(newValue, minDate)) newValue = minDate
+      }
+    }
+    else if (maxDate) {
+      // check isafter and set the month to maxDate
+      if (isAfter(newValue, maxDate)) {
+        newValue = setMonth(newValue, getMonth(maxDate))
+        // check again new value and set date to maxDate
+        if (isAfter(newValue, maxDate)) newValue = maxDate
+      }
+    }
+
+    setPreSelectionYear(newValue)
+    setPreSelection(newValue)
     setStep(2)
     setForceFocus(true)
-  }, [isDisabled, setPreSelectionYear, preSelection, year, setPreSelection, setStep, setForceFocus])
+  }, [isDisabled, setPreSelectionYear, preSelection, year, setPreSelection, setStep, setForceFocus, maxDate, minDate])
 
   //watch forceFocus
   useEffect(() => {
