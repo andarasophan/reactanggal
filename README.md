@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/npm/l/reactanggal.svg)](https://npmjs.org/package/reactanggal)
 
 A date picker component for React
+
+- Keyboard accessibility support
 ## Install
 
 ```bash
