@@ -66,21 +66,17 @@ const Year: React.FC<IYear> = ({
     if (isDisabled) return
 
     let newValue = setYear(preSelection, year)
-    if (minDate) {
-      // check isbefore and set the month to minDate
-      if (isBefore(newValue, minDate)) {
-        newValue = setMonth(newValue, getMonth(minDate))
-        // check again new value and set date to minDate
-        if (isBefore(newValue, minDate)) newValue = minDate
-      }
+    // check isbefore and set the month to minDate
+    if (minDate && isBefore(newValue, minDate)) {
+      newValue = setMonth(newValue, getMonth(minDate))
+      // check again new value and set date to minDate
+      if (isBefore(newValue, minDate)) newValue = minDate
     }
-    else if (maxDate) {
-      // check isafter and set the month to maxDate
-      if (isAfter(newValue, maxDate)) {
-        newValue = setMonth(newValue, getMonth(maxDate))
-        // check again new value and set date to maxDate
-        if (isAfter(newValue, maxDate)) newValue = maxDate
-      }
+    // check isafter and set the month to maxDate
+    if (maxDate && isAfter(newValue, maxDate)) {
+      newValue = setMonth(newValue, getMonth(maxDate))
+      // check again new value and set date to maxDate
+      if (isAfter(newValue, maxDate)) newValue = maxDate
     }
 
     setPreSelectionYear(newValue)
