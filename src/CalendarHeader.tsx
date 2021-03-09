@@ -1,18 +1,20 @@
-import { addMonths, addYears, endOfMonth, endOfYear, format, getYear, isAfter, isBefore, startOfMonth, startOfYear, subMonths, subYears } from 'date-fns'
+import { format, getYear } from 'date-fns'
 import React, { useContext, useMemo } from 'react'
 import { ReactanggalContext } from './context'
 import { myGetYearStart } from './helpers'
 
-const CalendarHeader = () => {
+const CalendarHeader = ({
+  handleDisabledNext = false,
+  handleDisabledPrevious = false,
+  handlePrevious = () => { },
+  handleNext = () => { }
+}) => {
   const {
     setStep,
     step,
-    setPreSelection = () => { },
     preSelection,
     setPreSelectionYear,
     preSelectionYear,
-    minDate,
-    maxDate,
     setForceFocus
   } = useContext(ReactanggalContext)
 
@@ -24,20 +26,6 @@ const CalendarHeader = () => {
     } else setStep(0)
   }
 
-  const handleNext = () => {
-    if (handleDisabledNext) return
-    if (step === 0) setPreSelection(addMonths(preSelection, 1))
-    else if (step === 1) setPreSelectionYear(addYears(preSelectionYear, 24))
-    else if (step === 2) setPreSelectionYear(addYears(preSelectionYear, 1))
-  }
-
-  const handlePrevious = () => {
-    if (handleDisabledPrevious) return
-    if (step === 0) setPreSelection(subMonths(preSelection, 1))
-    else if (step === 1) setPreSelectionYear(subYears(preSelectionYear, 24))
-    else if (step === 2) setPreSelectionYear(subYears(preSelectionYear, 1))
-  }
-
   const renderStepView = useMemo(() => {
     if (step === 0) return format(preSelection, 'MMMM yyyy')
     if (step === 1) {
@@ -47,28 +35,6 @@ const CalendarHeader = () => {
     if (step === 2) return getYear(preSelectionYear)
     return
   }, [step, preSelection, preSelectionYear])
-
-  const handleDisabledPrevious = useMemo(() => {
-    if (step === 0 && minDate) return isBefore(endOfMonth(subMonths(preSelection, 1)), minDate)
-    if (step === 1) {
-      const firstYearPreSelectionYear = myGetYearStart(preSelectionYear, 24)
-      if (minDate) return (firstYearPreSelectionYear - 1) < getYear(minDate)
-      return !Boolean(firstYearPreSelectionYear - 1)
-    }
-    if (step === 2) {
-      if (minDate) return isBefore(endOfYear(subYears(preSelectionYear, 1)), minDate)
-      return !Boolean(getYear(preSelectionYear) - 1)
-    }
-    return
-  }, [preSelectionYear, step, preSelection, minDate])
-
-  const handleDisabledNext = useMemo(() => {
-    if (!maxDate) return false
-    if (step === 0) return isAfter(startOfMonth(addMonths(preSelection, 1)), maxDate)
-    if (step === 1) return (myGetYearStart(preSelectionYear, 24) + 24) > getYear(maxDate)
-    if (step === 2) return isAfter(startOfYear(addYears(preSelectionYear, 1)), maxDate)
-    return
-  }, [step, preSelection, maxDate, preSelectionYear])
 
   return (
     <div className="reactanggal__header">

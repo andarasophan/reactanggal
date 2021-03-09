@@ -20,17 +20,19 @@
       &:focus {
         outline: none;
       }
-      &:hover, &:focus {
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: $reactanggal__button-hover-color;
-          z-index: -1;
-          border-radius: $reactanggal__button-border-radius;
+      @media(hover: hover) and (pointer: fine) {
+        &:hover, &:focus {
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $reactanggal__button-hover-color;
+            z-index: -1;
+            border-radius: $reactanggal__button-border-radius;
+          }
         }
       }
       &:disabled {
